@@ -1,0 +1,34 @@
+# coding: utf-8
+
+# flake8: noqa: F403
+# flake8: noqa: F405
+
+from .dimension_nodes import *
+from .string_nodes import *
+from .utils import *
+
+NODE_CLASS_MAPPINGS = {
+    "StringContainsKeywordNode": StringContainsKeywordNode,
+    "StringSelectNode": StringSelectNode,
+    "FindBestAspectRatio": FindBestAspectRatio,
+    "FindBestAspectRatioV2": FindBestAspectRatioV2,
+    "AdjustToAspectRatio": AdjustToAspectRatio,
+    "GetOutputSize": GetOutputSize,
+    "ShowText": ShowText,
+    "StringAddNode": StringAddNode,
+    "StringReplaceNode": StringReplaceNode,
+    "GetImageRange": GetImageRange,
+}
+
+NODE_DISPLAY_NAME_MAPPINGS = {
+    "StringContainsKeywordNode": "String Contains Keyword Node",
+    "StringSelectNode": "String Select Node",
+    "FindBestAspectRatio": "Find Best Aspect Ratio",
+    "FindBestAspectRatioV2": "Find Best Aspect Ratio V2",
+    "AdjustToAspectRatio": "Adjust To Aspect Ratio",
+    "GetOutputSize": "Get Output Size",
+    "ShowText": "Show Text",
+    "StringAddNode": "String Add Node",
+    "StringReplaceNode": "String Replace Node",
+    "GetImageRange": "Get Image Range",
+}
