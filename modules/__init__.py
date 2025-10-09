@@ -4,6 +4,7 @@
 # flake8: noqa: F405
 
 from .dimension_nodes import *
+from .image_processing import *
 from .string_nodes import *
 from .utils import *
 
@@ -32,3 +33,20 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "StringReplaceNode": "String Replace Node",
     "GetImageRange": "Get Image Range",
 }
+
+
+try:
+    from .image_processing import *
+
+    NODE_CLASS_MAPPINGS.update(
+        {
+            "LoadImageFromURL": LoadImageFromURL,
+        }
+    )
+    NODE_DISPLAY_NAME_MAPPINGS.update(
+        {
+            "LoadImageFromURL": "Load Image From URL",
+        }
+    )
+except ImportError:
+    pass
