@@ -19,6 +19,7 @@ NODE_CLASS_MAPPINGS = {
     "StringAddNode": StringAddNode,
     "StringReplaceNode": StringReplaceNode,
     "GetImageRange": GetImageRange,
+    "CalculateDimensionsByArea": CalculateDimensionsByArea,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -28,6 +29,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "FindBestAspectRatioV2": "Find Best Aspect Ratio V2",
     "AdjustToAspectRatio": "Adjust To Aspect Ratio",
     "GetOutputSize": "Get Output Size",
+    "CalculateDimensionsByArea": "Calculate Dimensions By Area",
     "ShowText": "Show Text",
     "StringAddNode": "String Add Node",
     "StringReplaceNode": "String Replace Node",

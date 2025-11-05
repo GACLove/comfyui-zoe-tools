@@ -1,3 +1,5 @@
+import math
+
 from .base import NODE_CATEGORY
 
 
@@ -230,3 +232,55 @@ class GetOutputSize:
             new_height = min_size
             new_width = round(new_height * target_ratio)
         return (new_width, new_height)
+
+
+class CalculateDimensionsByArea:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "target_area": ("INT", {"default": 1024 * 1024, "min": 90000, "max": 16777216}),
+                "ratio_width": ("INT", {"default": 16, "min": 1, "max": 21}),
+                "ratio_height": ("INT", {"default": 9, "min": 1, "max": 21}),
+                "alignment": ("INT", {"default": 32, "min": 8, "max": 64}),
+            }
+        }
+
+    RETURN_TYPES = ("INT", "INT")
+    RETURN_NAMES = ("width", "height")
+    FUNCTION = "calculate_dimensions"
+    CATEGORY = NODE_CATEGORY
+
+    def calculate_dimensions(
+        self,
+        target_area,
+        ratio_width,
+        ratio_height,
+        alignment=32,
+    ):
+        """
+        根据目标面积和宽高比计算对齐后的尺寸
+
+        Args:
+            target_area: 目标面积（像素）
+            ratio_width: 宽度比例
+            ratio_height: 高度比例
+            alignment: 对齐值（默认32）
+
+        Returns:
+            (width, height): 对齐后的宽度和高度
+        """
+        # 计算比例
+        ratio = ratio_width / ratio_height
+
+        # 根据面积和比例计算宽度
+        # area = width * height = width * (width / ratio)
+        # width^2 = area * ratio
+        width = math.sqrt(target_area * ratio)
+        height = width / ratio
+
+        # 对齐到指定的倍数
+        width = round(width / alignment) * alignment
+        height = round(height / alignment) * alignment
+
+        return (int(width), int(height))
