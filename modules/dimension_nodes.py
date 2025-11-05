@@ -182,19 +182,27 @@ class AdjustToAspectRatio:
         new_width = ratio_width * min_stride * min_idx
         new_height = ratio_height * min_stride * min_idx
 
-        cached_w, cached_h = new_width, new_height
-        valid_result = None  # 用于记录满足 min_area 的最优解
+        valid_result = None
+        closest_result = (new_width, new_height)
+
         while new_width * new_height <= max_area:
-            if new_width * new_height >= min_area:
+            current_area = new_width * new_height
+
+            if current_area >= min_area:
                 valid_result = (int(new_width), int(new_height))
-            cached_w, cached_h = new_width, new_height
-            new_width = cached_w + min_w_offset
-            new_height = cached_h + min_h_offset
+
+            # 更新最接近 min_area 的结果
+            if abs(current_area - min_area) < abs(closest_result[0] * closest_result[1] - min_area):
+                closest_result = (new_width, new_height)
+
+            new_width += min_w_offset
+            new_height += min_h_offset
 
         if valid_result:
             return valid_result
 
-        return (int(cached_w), int(cached_h))
+        # 否则返回最接近 min_area 的结果
+        return (int(closest_result[0]), int(closest_result[1]))
 
 
 class GetOutputSize:
