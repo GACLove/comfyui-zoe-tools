@@ -133,8 +133,8 @@ class AdjustToAspectRatio:
                 "origin_width": ("INT", {"default": 1024, "min": 64, "max": 8192}),
                 "origin_height": ("INT", {"default": 1024, "min": 64, "max": 8192}),
                 "min_stride": ("INT", {"default": 16, "min": 8, "max": 64}),
-                "max_area": ("INT", {"default": 768 * 1360, "min": 1, "max": 1044480}),
-                "min_area": ("INT", {"default": 640 * 1136, "min": 1, "max": 727040}),
+                "max_area": ("INT", {"default": 4096 * 4096, "min": 90000, "max": 16777216}),
+                "min_area": ("INT", {"default": 300 * 300, "min": 90000, "max": 16777216}),
             }
         }
 
