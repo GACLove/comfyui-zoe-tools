@@ -35,7 +35,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "StringAddNode": "String Add Node",
     "StringReplaceNode": "String Replace Node",
     "GetImageRange": "Get Image Range",
-    "ZoeTextEncodeQwenImageEditPlus": "Zoe Text Encode Qwen Image Edit Plus"
+    "ZoeTextEncodeQwenImageEditPlus": "ZoeTextEncodeQwenImageEditPlus"
 }
 
 
