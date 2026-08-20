@@ -291,7 +291,6 @@ class AutoResolutionByPixels:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "image": ("IMAGE",),
                 "ratio_mode": (["image", "custom"],),
                 "custom_ratio": (
                     "FLOAT",
@@ -320,7 +319,10 @@ class AutoResolutionByPixels:
                         "step": 1,
                     },
                 ),
-            }
+            },
+            "optional": {
+                "image": ("IMAGE",),
+            },
         }
 
     RETURN_TYPES = ("INT", "INT", "FLOAT")
@@ -328,20 +330,29 @@ class AutoResolutionByPixels:
     FUNCTION = "calculate"
     CATEGORY = "utils/resolution"
 
-    def calculate(self, image, ratio_mode, custom_ratio, megapixels, multiple):
-        source_h = int(image.shape[1])
-        source_w = int(image.shape[2])
-
-        if source_h <= 0 or source_w <= 0:
-            raise ValueError("Image width and height must be positive")
-        if custom_ratio <= 0:
-            raise ValueError("Custom ratio must be positive")
+    def calculate(self, ratio_mode, custom_ratio, megapixels, multiple, image=None):
         if megapixels <= 0:
             raise ValueError("Megapixels must be positive")
         if multiple <= 0:
             raise ValueError("Multiple must be positive")
 
-        ratio = source_w / source_h if ratio_mode == "image" else custom_ratio
+        if ratio_mode == "image":
+            if image is None:
+                raise ValueError("Image is required when ratio mode is 'image'")
+
+            source_h = int(image.shape[1])
+            source_w = int(image.shape[2])
+            if source_h <= 0 or source_w <= 0:
+                raise ValueError("Image width and height must be positive")
+
+            ratio = source_w / source_h
+        elif ratio_mode == "custom":
+            if custom_ratio <= 0:
+                raise ValueError("Custom ratio must be positive")
+            ratio = custom_ratio
+        else:
+            raise ValueError(f"Unsupported ratio mode: {ratio_mode}")
+
         total_pixels = megapixels * 1024 * 1024
 
         target_h = math.sqrt(total_pixels / ratio)
