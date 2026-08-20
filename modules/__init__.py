@@ -20,6 +20,7 @@ NODE_CLASS_MAPPINGS = {
     "StringReplaceNode": StringReplaceNode,
     "GetImageRange": GetImageRange,
     "CalculateDimensionsByArea": CalculateDimensionsByArea,
+    "AutoResolutionByPixels": AutoResolutionByPixels,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -34,6 +35,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "StringAddNode": "String Add Node",
     "StringReplaceNode": "String Replace Node",
     "GetImageRange": "Get Image Range",
+    "AutoResolutionByPixels": "Auto Resolution By Pixels",
 }
 
 

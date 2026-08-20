@@ -284,3 +284,70 @@ class CalculateDimensionsByArea:
         height = round(height / alignment) * alignment
 
         return (int(width), int(height))
+
+
+class AutoResolutionByPixels:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "ratio_mode": (["image", "custom"],),
+                "custom_ratio": (
+                    "FLOAT",
+                    {
+                        "default": 1.777777,
+                        "min": 0.05,
+                        "max": 20.0,
+                        "step": 0.001,
+                    },
+                ),
+                "megapixels": (
+                    "FLOAT",
+                    {
+                        "default": 1.0,
+                        "min": 0.01,
+                        "max": 16.0,
+                        "step": 0.01,
+                    },
+                ),
+                "multiple": (
+                    "INT",
+                    {
+                        "default": 32,
+                        "min": 1,
+                        "max": 256,
+                        "step": 1,
+                    },
+                ),
+            }
+        }
+
+    RETURN_TYPES = ("INT", "INT", "FLOAT")
+    RETURN_NAMES = ("width", "height", "ratio")
+    FUNCTION = "calculate"
+    CATEGORY = "utils/resolution"
+
+    def calculate(self, image, ratio_mode, custom_ratio, megapixels, multiple):
+        source_h = int(image.shape[1])
+        source_w = int(image.shape[2])
+
+        if source_h <= 0 or source_w <= 0:
+            raise ValueError("Image width and height must be positive")
+        if custom_ratio <= 0:
+            raise ValueError("Custom ratio must be positive")
+        if megapixels <= 0:
+            raise ValueError("Megapixels must be positive")
+        if multiple <= 0:
+            raise ValueError("Multiple must be positive")
+
+        ratio = source_w / source_h if ratio_mode == "image" else custom_ratio
+        total_pixels = megapixels * 1024 * 1024
+
+        target_h = math.sqrt(total_pixels / ratio)
+        target_w = target_h * ratio
+
+        target_w = max(multiple, round(target_w / multiple) * multiple)
+        target_h = max(multiple, round(target_h / multiple) * multiple)
+
+        return (int(target_w), int(target_h), float(ratio))
