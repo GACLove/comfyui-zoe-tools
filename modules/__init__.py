@@ -3,12 +3,15 @@
 # flake8: noqa: F403
 # flake8: noqa: F405
 
+from . import model_routes  # noqa: F401
 from .dimension_nodes import *
 from .image_processing import *
+from .prompt_enhance import RouterPromptEnhance
 from .string_nodes import *
 from .utils import *
 
 NODE_CLASS_MAPPINGS = {
+    "RouterPromptEnhance": RouterPromptEnhance,
     "StringContainsKeywordNode": StringContainsKeywordNode,
     "StringSelectNode": StringSelectNode,
     "FindBestAspectRatio": FindBestAspectRatio,
@@ -25,6 +28,7 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
+    "RouterPromptEnhance": "Router Prompt Enhance",
     "StringContainsKeywordNode": "String Contains Keyword Node",
     "StringSelectNode": "String Select Node",
     "FindBestAspectRatio": "Find Best Aspect Ratio",
