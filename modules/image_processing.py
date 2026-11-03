@@ -55,24 +55,37 @@ class LoadImageFromURL:
 class ZoeTextEncodeQwenImageEditPlus:
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": {
-            "clip": ("CLIP", ),
-            "prompt": ("STRING", {"multiline": True, "dynamicPrompts": True}),
+        return {
+            "required": {
+                "clip": ("CLIP",),
+                "prompt": ("STRING", {"multiline": True, "dynamicPrompts": True}),
             },
-            "optional": {"vae": ("VAE", ),
-                         "image1": ("IMAGE", ),
-                         "image2": ("IMAGE", ),
-                         "image3": ("IMAGE", ),
-                         "image4": ("IMAGE", ),
-                         "image5": ("IMAGE", ),
-                         }}
+            "optional": {
+                "vae": ("VAE",),
+                "image1": ("IMAGE",),
+                "image2": ("IMAGE",),
+                "image3": ("IMAGE",),
+                "image4": ("IMAGE",),
+                "image5": ("IMAGE",),
+            },
+        }
 
     RETURN_TYPES = ("CONDITIONING",)
     FUNCTION = "encode"
 
     CATEGORY = NODE_CATEGORY
 
-    def encode(self, clip, prompt, vae=None, image1=None, image2=None, image3=None, image4=None, image5=None):
+    def encode(
+        self,
+        clip,
+        prompt,
+        vae=None,
+        image1=None,
+        image2=None,
+        image3=None,
+        image4=None,
+        image5=None,
+    ):
         ref_latents = []
         images = [image1, image2, image3, image4, image5]
         images_vl = []
@@ -99,10 +112,16 @@ class ZoeTextEncodeQwenImageEditPlus:
                     s = comfy.utils.common_upscale(samples, width, height, "area", "disabled")
                     ref_latents.append(vae.encode(s.movedim(1, -1)[:, :, :, :3]))
 
-                image_prompt += "Picture {}: <|vision_start|><|image_pad|><|vision_end|>".format(i + 1)
+                image_prompt += "Picture {}: <|vision_start|><|image_pad|><|vision_end|>".format(
+                    i + 1
+                )
 
-        tokens = clip.tokenize(image_prompt + prompt, images=images_vl, llama_template=llama_template)
+        tokens = clip.tokenize(
+            image_prompt + prompt, images=images_vl, llama_template=llama_template
+        )
         conditioning = clip.encode_from_tokens_scheduled(tokens)
         if len(ref_latents) > 0:
-            conditioning = node_helpers.conditioning_set_values(conditioning, {"reference_latents": ref_latents}, append=True)
-        return (conditioning, )
+            conditioning = node_helpers.conditioning_set_values(
+                conditioning, {"reference_latents": ref_latents}, append=True
+            )
+        return (conditioning,)
